@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>skazsi.adventofcode</groupId>
-  <artifactId>AdventOfCode2023</artifactId>
+  <artifactId>advent-of-code</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
