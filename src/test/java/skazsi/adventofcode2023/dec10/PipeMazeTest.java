@@ -11,41 +11,55 @@ import org.junit.jupiter.api.Test;
 public class PipeMazeTest {
 
 	@Test
-	void part1_example1() throws Exception {
+	void example1() throws Exception {
 		// Given
 		PipeMaze underTest = new PipeMaze(5, 5, getClass().getResourceAsStream("example1"));
 
 		// When
-		int result = underTest.goFurthest(Direction.East);
+		int stepsToFurthestPoint = underTest.goFurthest(Direction.East);
 
 		// Then
-		then(result).isEqualTo(4);
+		then(stepsToFurthestPoint).isEqualTo(4);
 	}
 
 	@Test
-	void part1_example2() throws Exception {
+	void example2() throws Exception {
 		// Given
 		PipeMaze underTest = new PipeMaze(5, 5, getClass().getResourceAsStream("example2"));
 
 		// When
-		int result = underTest.goFurthest(Direction.East);
+		int stepsToFurthestPoint = underTest.goFurthest(Direction.East);
 
 		// Then
-		then(result).isEqualTo(8);
+		then(stepsToFurthestPoint).isEqualTo(8);
 	}
 
 	@Test
-	void part1_input() throws Exception {
+	void example3() throws Exception {
+		// Given
+		PipeMaze underTest = new PipeMaze(9, 11, getClass().getResourceAsStream("example3"));
+
+		// When
+		int stepsToFurthestPoint = underTest.goFurthest(Direction.East);
+		int innerTilesCount = underTest.getInnerTilesCount();
+
+		// Then
+		then(stepsToFurthestPoint).isEqualTo(23);
+		then(innerTilesCount).isEqualTo(4);
+	}
+
+	@Test
+	void input() throws Exception {
 		// Given
 		PipeMaze underTest = new PipeMaze(140, 140, getClass().getResourceAsStream("input"));
 
 		// When
-		int result = underTest.goFurthest(Direction.North);
+		int stepsToFurthestPoint = underTest.goFurthest(Direction.North);
+		int innerTilesCount = underTest.getInnerTilesCount();
 
 		// Then
-		then(result).isEqualTo(6951);
-
-		underTest.printResultMatrix();
+		then(stepsToFurthestPoint).isEqualTo(6951);
+		then(innerTilesCount).isEqualTo(563);
 	}
 
 	private static class PipeMaze {
@@ -104,14 +118,36 @@ public class PipeMazeTest {
 			throw new RuntimeException();
 		}
 
-		private void printResultMatrix() {
+		int getInnerTilesCount() {
+			int count = 0;
+			boolean inner = false;
+
 			for (int verticalPosition = 0; verticalPosition < verticalSize; verticalPosition++) {
 				for (int horizontalPosition = 0; horizontalPosition < horizontalSize; horizontalPosition++) {
-					System.out.print(resultMatrix[verticalPosition][horizontalPosition].sign);
+					String sign = resultMatrix[verticalPosition][horizontalPosition].sign;
+					switch (sign) {
+					case "F":
+						inner = !inner;
+						break;
+					case "7":
+						inner = !inner;
+						break;
+					case "|":
+						inner = !inner;
+						break;
+					case "S":
+						inner = !inner;
+						break;
+					case ".":
+						if (inner)
+							count++;
+						break;
+					}
 				}
-				System.out.println();
 			}
+			return count;
 		}
+
 	}
 
 	private enum Direction {
